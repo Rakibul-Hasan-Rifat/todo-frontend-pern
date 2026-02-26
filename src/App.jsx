@@ -1,4 +1,5 @@
 import axios from "axios";
+import { BACKEND_URL } from "./api.js";
 import { useState, useEffect } from "react";
 import toast, { Toaster } from 'react-hot-toast';
 import { CiEdit, CiTrash } from "react-icons/ci";
@@ -14,7 +15,7 @@ function App() {
 
   const getTodos = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/todos');
+      const res = await axios.get(`${BACKEND_URL}/todos`);
       setTodos(res.data)
     } catch (err) {
       console.log(err)
@@ -28,7 +29,7 @@ function App() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/todos/create', {
+      await axios.post(`${BACKEND_URL}/todos/create`, {
         description, completed: hasDone
       })
       toast.success('Successfully the todo added!')
@@ -42,7 +43,7 @@ function App() {
   const handleUpdate = async (todo) => {
     // console.log(id, editedText, hasDone);
     try {
-      await axios.put(`http://localhost:5000/todos/${todo.todoid}`, {
+      await axios.put(`${BACKEND_URL}/todos/${todo.todoid}`, {
         description: editedText || todo.description,
         completed: hasDone,
       });
@@ -57,7 +58,7 @@ function App() {
   const handleDeleteTodo = async (id) => {
     console.log(id)
     try {
-      await axios.delete(`http://localhost:5000/todos/${id}`)
+      await axios.delete(`${BACKEND_URL}/todos/${id}`)
       toast.success('Successfully deleted!')
       getTodos();
     } catch (error) {
